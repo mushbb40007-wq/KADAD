@@ -229,4 +229,14 @@ with col_right:
 if st.session_state.db_workers:
     st.subheader("📋 قائمة الأسطول")
     st.table(pd.DataFrame(st.session_state.db_workers))
+import subprocess # هذا السلاح اللي بيشغل الأوامر الخارجية
 
+if status: # إذا شغلت الزر في الموقع
+    st.sidebar.success("🚀 جاري تشغيل محرك mitmproxy في الخلفية...")
+    # هذا الأمر يشغل الرادار على بورت 8080 ويبدأ يلقط البيانات
+    try:
+        # ملاحظة: هذا الكود يحتاج تشغيل على سيرفر حقيقي (Google Cloud)
+        subprocess.Popen(["mitmdump", "-p", "8080", "--set", "block_global=false"])
+        st.sidebar.write("📡 الرادار مفتوح الآن على بورت: 8080")
+    except Exception as e:
+        st.sidebar.error(f"فشل تشغيل المحرك: {e}")
